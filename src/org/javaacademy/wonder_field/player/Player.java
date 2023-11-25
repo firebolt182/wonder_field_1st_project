@@ -28,8 +28,8 @@ public class Player {
             String letter = null;
             while (true){
                 letter = scanner.nextLine();
-                if ((Character.UnicodeBlock.of(letter.charAt(0))
-                        .equals(Character.UnicodeBlock.CYRILLIC)) && letter.length()==1) {
+                if (letter.length()==1 && (Character.UnicodeBlock.of(letter.charAt(0))
+                        .equals(Character.UnicodeBlock.CYRILLIC))) {
                     System.out.printf("Игрок %s : %s\n",this.getName(),letter);
                     break;
                 } else{
@@ -45,6 +45,5 @@ public class Player {
         System.out.printf("Игрок %s : %s\n",this.getName(),word);
         return word;
     }
-
 
 }

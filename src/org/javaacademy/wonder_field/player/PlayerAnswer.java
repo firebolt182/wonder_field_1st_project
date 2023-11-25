@@ -1,5 +1,6 @@
 package org.javaacademy.wonder_field.player;
 
+
 import java.util.Scanner;
 
 //3.4 Создание класса 'Ответ игрока'
