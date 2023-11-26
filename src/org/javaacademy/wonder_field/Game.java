@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
-    private static final int PLAYERS = 3;
-    private static final int ROUNDS = 4;
-    private static final int GROUP_ROUNDS = 3;
-    private static final int FINAL_ROUND_INDEX = 3;
-    private String[] questions = new String[ROUNDS];
-    private String[] answers = new String[ROUNDS];
+    private final int playersNum = 3;
+    private final int rounds = 4;
+    private final int groupRounds = 3;
+    private final int finalRoundIndex = 3;
+    private String[] questions = new String[rounds];
+    private String[] answers = new String[rounds];
 //5.1 поле winners
     private ArrayList<Player> winners = new ArrayList<>();
     private Tableau tableau;
@@ -56,7 +56,7 @@ public class Game {
 //5.2 метод создания игроков
     public Player[] createPlayers(){
         Player[] players = new Player[3];
-        for (int i = 0; i < PLAYERS; i++) {
+        for (int i = 0; i < playersNum; i++) {
             System.out.println("Игрок №" + (i+1) + " представьтесь: имя,город. Например: Иван,Москва");
             while (true) {
                 String data = scanner.nextLine();
@@ -124,7 +124,7 @@ public class Game {
     public void playRound(Player[] players){
         boolean isWin = false;
         while (!isWin){
-            for (int i = 0; i < PLAYERS; i++) {
+            for (int i = 0; i < playersNum; i++) {
                 isWin = move(questions[i], players[i]);
                 if (isWin) {
                     if(!Yakubovich.isIsFinalRound()) {
@@ -142,7 +142,7 @@ public class Game {
     }
 //5.7 создаем метод сыграть все групповые раунды
     public void playAllGroupRounds(){
-        for (int i = 0; i < GROUP_ROUNDS; i++) {
+        for (int i = 0; i < groupRounds; i++) {
             Player[] players = createPlayers();
             tableau.setTrueAnswer(answers[i]);
             //обнуляю табло
@@ -157,11 +157,11 @@ public class Game {
 
 //5.8 создаем метод сыграть финальный раунд
     public void playFinalRound(){
-        tableau.setTrueAnswer(answers[FINAL_ROUND_INDEX]);
+        tableau.setTrueAnswer(answers[finalRoundIndex]);
         tableau.init();
         Player[]win = new Player[3];
-        yakubovich.invite(winners.toArray(win),FINAL_ROUND_INDEX+1);
-        yakubovich.askingQuestion(FINAL_ROUND_INDEX,questions);
+        yakubovich.invite(winners.toArray(win),finalRoundIndex+1);
+        yakubovich.askingQuestion(finalRoundIndex,questions);
         System.out.println(" " + String.join(" ", tableau.getLettersOnTableau()) + " ");
         playRound(winners.toArray(win));
 
