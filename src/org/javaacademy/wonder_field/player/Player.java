@@ -1,12 +1,12 @@
 package org.javaacademy.wonder_field.player;
 
-import java.util.Scanner;
+import org.javaacademy.wonder_field.Game;
+
 
 //3.1 Создание класса Игрок
 public class Player {
     private String name;
     private String city;
-    private Scanner scanner;
 
     public Player(String name, String city) {
         this.name = name;
@@ -23,11 +23,10 @@ public class Player {
 
 //3.2 Кричит букву
     public String sayLetter(){
-        scanner = new Scanner(System.in);
         // Проверяем букву,чтобы была одна и кириллицей
             String letter = null;
             while (true){
-                letter = scanner.nextLine();
+                letter = Game.getScanner().nextLine();
                 if (letter.length()==1 && (Character.UnicodeBlock.of(letter.charAt(0))
                         .equals(Character.UnicodeBlock.CYRILLIC))) {
                     System.out.printf("Игрок %s : %s\n",this.getName(),letter);
@@ -38,12 +37,11 @@ public class Player {
             }
         return letter;
     }
+
 //3.3 Говорит слово
     public String sayWord(){
-        scanner = new Scanner(System.in);
-        String word = scanner.nextLine();
+        String word = Game.getScanner().nextLine();
         System.out.printf("Игрок %s : %s\n",this.getName(),word);
         return word;
     }
-
 }

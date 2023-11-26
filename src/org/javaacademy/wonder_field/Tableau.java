@@ -27,6 +27,7 @@ public class Tableau {
         lettersOnTableau = new String[trueAnswer.length()];
         Arrays.fill(lettersOnTableau, "_");
     }
+
 //2.3 отображает все буквы
     public void show() {
         if (attributesNotEmpty()) {
@@ -36,6 +37,7 @@ public class Tableau {
             System.out.println();
         }
     }
+
 // 2.4 открывает букву
     public void openLetter(String word){
         if(attributesNotEmpty()) {
@@ -50,14 +52,17 @@ public class Tableau {
         // Отображение будет с найденной буквой
         this.show();
     }
+
 //2.5 открывает слово целиком
     public void openWord(String word){
         System.out.println(word.toUpperCase());
     }
+
 //2.6 содержит ли неизвестные буквы
     public boolean containsUnknownWords(){
         return !Arrays.toString(this.getLettersOnTableau()).contains("_");
     }
+
 //2.7 проверяет, что атрибуты не пустые
     public boolean attributesNotEmpty(){
         return !trueAnswer.isEmpty() || lettersOnTableau == null;

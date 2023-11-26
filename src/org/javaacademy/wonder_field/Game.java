@@ -8,20 +8,24 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
-    private final int PLAYERS = 3;
-    private final int ROUNDS = 4;
-    private final int GROUP_ROUNDS = 3;
-    private final int FINAL_ROUND_INDEX = 3;
+    private static final int PLAYERS = 3;
+    private static final int ROUNDS = 4;
+    private static final int GROUP_ROUNDS = 3;
+    private static final int FINAL_ROUND_INDEX = 3;
     private String[] questions = new String[ROUNDS];
     private String[] answers = new String[ROUNDS];
 //5.1 поле winners
     private ArrayList<Player> winners = new ArrayList<>();
-    private static Tableau tableau;
+    private Tableau tableau;
     private Yakubovich yakubovich;
 
-    public static Scanner scanner;
+    private static Scanner scanner;
 
-//1.5 создание метода init()
+    public static Scanner getScanner() {
+        return scanner;
+    }
+
+    //1.5 создание метода init()
     public void init() {
         System.out.println("Запуск игры \"Поле Чудес\" - подготовка к игре." +
                 " Вам нужно ввести вопросы и ответы для игры.\n");
@@ -35,7 +39,6 @@ public class Game {
             String answer = scanner.nextLine();
             answers[i-1] = answer;
         }
-
         //инициализирую табло
         tableau = new Tableau();
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
@@ -49,26 +52,27 @@ public class Game {
         }
         yakubovich = new Yakubovich();
     }
+
 //5.2 метод создания игроков
     public Player[] createPlayers(){
         Player[] players = new Player[3];
-        Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < PLAYERS; i++) {
             System.out.println("Игрок №" + (i+1) + " представьтесь: имя,город. Например: Иван,Москва");
             while (true) {
                 String data = scanner.nextLine();
-                if(data.contains(",")) {
+                if (data.contains(",")) {
                     String[] dataArray = data.split(",");
                     players[i] = new Player(dataArray[0], dataArray[1].trim());
                     break;
-                }else{
+                } else {
                     System.out.println("Введите имя и город через запятую");
                 }
             }
-            }
+        }
 
         return players;
     }
+
 //5.3 вытаскиваем имена игроков в отдельный массив
     public String[] namesOfPlayers(Player[] players){
         String[] names = new String[3];
@@ -77,10 +81,12 @@ public class Game {
         }
         return names;
     }
+
 //5.4 проверка табло
     public boolean checkTableau(Tableau tableau){
         return tableau.containsUnknownWords();
     }
+
     //5.5 Метод хода игрока
     public boolean move(String question, Player player){
 
@@ -96,7 +102,7 @@ public class Game {
                 while (true){
                     if (answer.length()==0){
                         answer = playerAnswer.move();
-                    }else{
+                    } else {
                         return false;
                     }
                 }
@@ -107,7 +113,9 @@ public class Game {
                 if (checkTableau(tableau)) {
                     return true;
                 }
-            } else {return false;}
+            } else {
+                return false;
+            }
 
         }
         return false;
@@ -117,16 +125,15 @@ public class Game {
         boolean isWin = false;
         while (!isWin){
             for (int i = 0; i < PLAYERS; i++) {
-              isWin = move(questions[i], players[i]);
-              if (isWin) {
-                  if(!Yakubovich.isIsFinalRound()) {
-                      yakubovich.askForWinner(players[i].getName(),
+                isWin = move(questions[i], players[i]);
+                if (isWin) {
+                    if(!Yakubovich.isIsFinalRound()) {
+                        yakubovich.askForWinner(players[i].getName(),
                               players[i].getCity(), false);
-                      winners.add(players[i]);
-                  } else {
-                      Yakubovich.setIsFinalRound(true);
-                      yakubovich.askForWinner(players[i].getName(),
-                              players[i].getCity(), true);
+                        winners.add(players[i]);
+                    } else {
+                        Yakubovich.setIsFinalRound(true);
+                        yakubovich.askForWinner(players[i].getName(), players[i].getCity(), true);
                   }
                   break;
               }
@@ -147,6 +154,7 @@ public class Game {
 
         }
     }
+
 //5.8 создаем метод сыграть финальный раунд
     public void playFinalRound(){
         tableau.setTrueAnswer(answers[FINAL_ROUND_INDEX]);
