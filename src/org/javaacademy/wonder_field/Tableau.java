@@ -32,7 +32,7 @@ public class Tableau {
     public void show() {
         if (attributesNotEmpty()) {
             for (String letters : lettersOnTableau) {
-                System.out.print(letters);
+                System.out.print(" " + String.join(" ", letters) + " ");
             }
             System.out.println();
         }
@@ -55,7 +55,7 @@ public class Tableau {
 
 //2.5 открывает слово целиком
     public void openWord(String word){
-        System.out.println(word.toUpperCase());
+        System.out.println(String.join(" ", word.toUpperCase()));
     }
 
 //2.6 содержит ли неизвестные буквы

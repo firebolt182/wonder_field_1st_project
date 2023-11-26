@@ -149,7 +149,7 @@ public class Game {
             tableau.init();
             yakubovich.invite(players, i+1);
             yakubovich.askingQuestion(i,questions);
-            System.out.println(String.join("", tableau.getLettersOnTableau()));
+            System.out.println(" " + String.join(" ", tableau.getLettersOnTableau()) + " ");
             playRound(players);
 
         }
@@ -162,7 +162,7 @@ public class Game {
         Player[]win = new Player[3];
         yakubovich.invite(winners.toArray(win),FINAL_ROUND_INDEX+1);
         yakubovich.askingQuestion(FINAL_ROUND_INDEX,questions);
-        System.out.println(String.join("", tableau.getLettersOnTableau()));
+        System.out.println(" " + String.join(" ", tableau.getLettersOnTableau()) + " ");
         playRound(winners.toArray(win));
 
     }
