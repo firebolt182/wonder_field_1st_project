@@ -6,7 +6,7 @@ import org.javaacademy.wonder_field.player.Player;
 //4.1 Создание класса Якубович
 public class Yakubovich {
     private static boolean isFinalRound;
-    private static final String name = "Якубович";
+    private final String name = "Якубович";
 
     public static boolean isIsFinalRound() {
         return isFinalRound;
@@ -45,13 +45,13 @@ public class Yakubovich {
     }
 
 //3.6 Кричит в случае победы игрока
-    public void askForWinner(String name, String city, boolean isFinalRound){
+    public void askForWinner(String playerName, String city, boolean isFinalRound){
         if (!isFinalRound){
-            System.out.println(name + ": Молодец! "+ name + " из " + city + " проходит в финал!");
+            System.out.println(name + ": Молодец! "+playerName + " из " + city + " проходит в финал!");
         }
         else {
             System.out.println(name + " : И перед нами победитель Капитал шоу поле чудес! Это "
-                    + name + " из " + city);
+                    + playerName + " из " + city);
         }
     }
 
