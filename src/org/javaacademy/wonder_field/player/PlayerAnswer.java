@@ -12,6 +12,7 @@ public class PlayerAnswer {
         this.player = player;
     }
 
+
 //3.5 ход игрока
     public String move(){
         System.out.printf("Ход игрока %s, %s\n", player.getName(), player.getCity());
@@ -23,7 +24,6 @@ public class PlayerAnswer {
             if(choice.equals("б") || choice.equals("с")){
                 break;
             }
-            System.out.println("Сделайте корректный выбор");
         }
         switch (choice){
             case "с" :

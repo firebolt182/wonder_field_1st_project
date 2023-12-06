@@ -1,16 +1,24 @@
 package org.javaacademy.wonder_field.player;
 
 import org.javaacademy.wonder_field.Game;
+import org.javaacademy.wonder_field.Wheel;
 
 
 //3.1 Создание класса Игрок
 public class Player {
     private String name;
     private String city;
+    private int points;
+    private int threeInARow;
+
+    private boolean haveMoneyFromBox;
 
     public Player(String name, String city) {
         this.name = name;
         this.city = city;
+        this.points = 0;
+        threeInARow = 0;
+        this.setHaveMoneyFromBox(false);
     }
 
     public String getName() {
@@ -21,14 +29,40 @@ public class Player {
         return city;
     }
 
-//3.2 Кричит букву
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getThreeInARow() {
+        return threeInARow;
+    }
+
+    public void setThreeInARow(int threeInARow) {
+        this.threeInARow = threeInARow;
+    }
+
+    public boolean isHaveMoneyFromBox() {
+        return haveMoneyFromBox;
+    }
+
+    public void setHaveMoneyFromBox(boolean haveMoneyFromBox) {
+        this.haveMoneyFromBox = haveMoneyFromBox;
+    }
+
+    //3.2 Кричит букву
     public String sayLetter(){
         // Проверяем букву,чтобы была одна и кириллицей
             String letter = null;
             while (true){
                 letter = Game.getScanner().nextLine();
-                if (letter.length()==1 && (Character.UnicodeBlock.of(letter.charAt(0))
-                        .equals(Character.UnicodeBlock.CYRILLIC))) {
+                char letterCheck = letter.charAt(0);
+                if (letter.length()==1 &&
+                        ((letterCheck >= 'А' && letterCheck <= 'Я') ||
+                                (letterCheck >= 'а' && letterCheck <= 'я'))) {
                     System.out.printf("Игрок %s : %s\n",this.getName(),letter);
                     break;
                 } else{
@@ -43,5 +77,9 @@ public class Player {
         String word = Game.getScanner().nextLine();
         System.out.printf("Игрок %s : %s\n",this.getName(),word);
         return word;
+    }
+    public int runTheWheel(){
+        int max = Wheel.getSector().length-1;
+        return (int)(Math.random()*max);
     }
 }
