@@ -1,7 +1,8 @@
-package org.javaacademy.wonder_field;
+package org.javaacademy.wonderfield;
 
 import java.util.Arrays;
 //2.1 Создание класса Табло с полями
+
 public class Tableau {
     private String trueAnswer;
     private String[] lettersOnTableau;
@@ -23,12 +24,12 @@ public class Tableau {
     }
 
     //2.2 Инициализация табло
-    public void init(){
+    public void init() {
         lettersOnTableau = new String[trueAnswer.length()];
         Arrays.fill(lettersOnTableau, "_");
     }
 
-//2.3 отображает все буквы
+    //2.3 отображает все буквы
     public void show() {
         if (attributesNotEmpty()) {
             for (String letters : lettersOnTableau) {
@@ -38,9 +39,9 @@ public class Tableau {
         }
     }
 
-// 2.4 открывает букву
-    public void openLetter(String word){
-        if(attributesNotEmpty()) {
+    // 2.4 открывает букву
+    public void openLetter(String word) {
+        if (attributesNotEmpty()) {
             if (word.length() == 1) {
                 for (int i = 0; i < trueAnswer.length(); i++) {
                     if (trueAnswer.split("")[i].equals(word.toUpperCase())) {
@@ -53,18 +54,18 @@ public class Tableau {
         this.show();
     }
 
-//2.5 открывает слово целиком
-    public void openWord(String word){
+    //2.5 открывает слово целиком
+    public void openWord(String word) {
         System.out.println(String.join(" ", word.toUpperCase()));
     }
 
-//2.6 содержит ли неизвестные буквы
-    public boolean containsUnknownWords(){
+    //2.6 содержит ли неизвестные буквы
+    public boolean containsUnknownWords() {
         return !Arrays.toString(this.getLettersOnTableau()).contains("_");
     }
 
-//2.7 проверяет, что атрибуты не пустые
-    public boolean attributesNotEmpty(){
+    //2.7 проверяет, что атрибуты не пустые
+    public boolean attributesNotEmpty() {
         return !trueAnswer.isEmpty() || lettersOnTableau == null;
     }
 }

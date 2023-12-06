@@ -1,14 +1,10 @@
-package org.javaacademy.wonder_field;
+package org.javaacademy.wonderfield;
 
-import org.javaacademy.wonder_field.player.Player;
+import org.javaacademy.wonderfield.player.Player;
 
 public class Box {
-    Player player;
     private boolean haveMoney;
 
-    public boolean isHaveMoney() {
-        return haveMoney;
-    }
 
     public Box(boolean haveMoney) {
         this.haveMoney = haveMoney;

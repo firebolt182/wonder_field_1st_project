@@ -1,8 +1,8 @@
-package org.javaacademy.wonder_field.host;
+package org.javaacademy.wonderfield.host;
 
-import org.javaacademy.wonder_field.Game;
-import org.javaacademy.wonder_field.Tableau;
-import org.javaacademy.wonder_field.player.Player;
+import org.javaacademy.wonderfield.Game;
+import org.javaacademy.wonderfield.Tableau;
+import org.javaacademy.wonderfield.player.Player;
 
 //4.1 Создание класса Якубович
 public class Yakubovich {

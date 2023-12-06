@@ -1,4 +1,4 @@
-package org.javaacademy.wonder_field.player;
+package org.javaacademy.wonderfield.player;
 
 public enum AnswerType {
     WORD,

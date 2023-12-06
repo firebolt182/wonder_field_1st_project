@@ -1,4 +1,4 @@
-package org.javaacademy.wonder_field;
+package org.javaacademy.wonderfield;
 
 public class Runner {
 

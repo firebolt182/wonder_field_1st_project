@@ -1,4 +1,4 @@
-package org.javaacademy.wonder_field;
+package org.javaacademy.wonderfield;
 
 public class Wheel {
     //1. Создать барабан с перечнем значений

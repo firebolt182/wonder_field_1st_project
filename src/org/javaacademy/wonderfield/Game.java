@@ -1,13 +1,13 @@
-package org.javaacademy.wonder_field;
+package org.javaacademy.wonderfield;
 
-import org.javaacademy.wonder_field.host.Yakubovich;
-import org.javaacademy.wonder_field.player.Player;
-import org.javaacademy.wonder_field.player.PlayerAnswer;
+import org.javaacademy.wonderfield.host.Yakubovich;
+import org.javaacademy.wonderfield.player.Player;
+import org.javaacademy.wonderfield.player.PlayerAnswer;
 
 import java.util.*;
 
-import static org.javaacademy.wonder_field.QuestionsAndAnswers.questions;
-import static org.javaacademy.wonder_field.QuestionsAndAnswers.answers;
+import static org.javaacademy.wonderfield.QuestionsAndAnswers.questions;
+import static org.javaacademy.wonderfield.QuestionsAndAnswers.answers;
 
 public class Game {
     final int PLAYERS_NUM = 3;
@@ -180,7 +180,7 @@ public class Game {
             //блок на проверку не пустого ответа игрока
             try {
                 if (sector == 13) {
-                    player.setThreeInARow(0);
+                    player.setThreeInaRow(0);
                     return false;
                 }
                 answer = playerAnswer.move();
@@ -190,7 +190,7 @@ public class Game {
                     if (answer.length() == 0) {
                         answer = playerAnswer.move();
                     } else {
-                        player.setThreeInARow(0);
+                        player.setThreeInaRow(0);
                         return false;
                     }
                 }
@@ -198,23 +198,23 @@ public class Game {
             //ищем совпадение
             if (yakubovich.checkAnswer(answer, tableau.getTrueAnswer(), tableau)) {
                 checkSector(player, sector);
-                player.setThreeInARow(player.getThreeInARow() + 1);
-                if (player.getThreeInARow() == 3 && !player.isHaveMoneyFromBox()) {
+                player.setThreeInaRow(player.getThreeInaRow() + 1);
+                if (player.getThreeInaRow() == 3 && !player.isHaveMoneyFromBox()) {
                     putMoneyToBox();
                     chooseBox(player);
                     System.out.println();
-                    player.setThreeInARow(0);
+                    player.setThreeInaRow(0);
                 }
                 //если все буквы отгаданы - то игрок победил
                 if (checkTableau(tableau)) {
                     return true;
                 }
             } else {
-                player.setThreeInARow(0);
+                player.setThreeInaRow(0);
                 return false;
             }
         }
-        player.setThreeInARow(0);
+        player.setThreeInaRow(0);
         return false;
     }
 
