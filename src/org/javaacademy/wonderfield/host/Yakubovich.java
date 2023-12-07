@@ -12,12 +12,14 @@ public class Yakubovich {
 
     //4.2 Первая фраза
     public void firstPhrase() {
-        System.out.println(name + ": Здравствуйте, уважаемые дамы и господа! Пятница! В эфире капитал-шоу «Поле чудес»!");
+        System.out.println(name + ": Здравствуйте, уважаемые дамы и господа! Пятница!"
+                + " В эфире капитал-шоу «Поле чудес»!");
     }
 
     //4.3 Прощание
     public void goodbyePhrase() {
-        System.out.println(name + ": Мы прощаемся с вами ровно на одну неделю! Здоровья вам, до встречи!");
+        System.out.println(name + ": Мы прощаемся с вами ровно на одну неделю! "
+                + "Здоровья вам, до встречи!");
     }
 
     //4.4 Приглашение
@@ -28,7 +30,8 @@ public class Yakubovich {
                     + concat(players));
         } else {
             Game.isFinalRound = true;
-            System.out.println(name + ": приглашаю победителей групповых этапов: " + concat(players));
+            System.out.println(name + ": приглашаю победителей групповых этапов: "
+                    + concat(players));
         }
     }
 
@@ -40,7 +43,8 @@ public class Yakubovich {
     //3.6 Кричит в случае победы игрока
     public void askForWinner(String playerName, String city, boolean isFinalRound) {
         if (!isFinalRound) {
-            System.out.println(name + ": Молодец! " + playerName + " из " + city + " проходит в финал!");
+            System.out.println(name + ": Молодец! " + playerName + " из " + city
+                    + " проходит в финал!");
         } else {
             System.out.println(name + " : И перед нами победитель Капитал шоу поле чудес! Это "
                     + playerName + " из " + city);
@@ -101,6 +105,10 @@ public class Yakubovich {
 
     public void refuseSuperGame(Player player) {
         System.out.println(name + ": " + player.getName() + " отказался от супер игры.");
+    }
+
+    public void boxesToRoom() {
+        System.out.println(name + ": Две шкатулки в студию!!!");
     }
 
 

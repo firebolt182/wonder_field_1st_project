@@ -1,22 +1,19 @@
 package org.javaacademy.wonderfield;
 
+import java.util.*;
 import org.javaacademy.wonderfield.host.Yakubovich;
 import org.javaacademy.wonderfield.player.Player;
 import org.javaacademy.wonderfield.player.PlayerAnswer;
-
-import java.util.*;
 
 import static org.javaacademy.wonderfield.QuestionsAndAnswers.questions;
 import static org.javaacademy.wonderfield.QuestionsAndAnswers.answers;
 
 public class Game {
-    final int PLAYERS_NUM = 3;
-    final static int ROUNDS = 6;
-    final int GROUP_ROUNDS = 3;
-    private final int FINAL_ROUND_INDEX = 3;
-    private final int SUPER_ROUND_INDEX = 4;
-    /*private String[] questions = new String[ROUNDS];
-    private String[] answers = new String[ROUNDS];*/
+    public static final  int PLAYERS_NUM = 3;
+    public static final int ROUNDS = 6;
+    public static final int GROUP_ROUNDS = 3;
+    public static final int FINAL_ROUND_INDEX = 3;
+    public static final int SUPER_ROUND_INDEX = 4;
     public static boolean isFinalRound;
     //5.1 поле winners
     private ArrayList<Player> winners = new ArrayList<>();
@@ -49,26 +46,12 @@ public class Game {
 
     //1.5 создание метода init()
     public void init() {
-        System.out.println("Запуск игры \"Поле Чудес\" - подготовка к игре." +
-                " Вам нужно ввести вопросы и ответы для игры.\n");
-        {
-            questions[0] = "tech";
-            answers[0] = "tech";
-            questions[1] = "первыйцветок";
-            answers[1] = "первыйцветок";
-            questions[2] = "второйцветок";
-            answers[2] = "второйцветок";
-            questions[3] = "третийцветок";
-            answers[3] = "третийцветок";
-            questions[4] = "четвертый";
-            answers[4] = "четвертый";
-            questions[5] = "суперигра";
-            answers[5] = "суперигра";
+        System.out.println("Запуск игры \"Поле Чудес\" - подготовка к игре."
+                + " Вам нужно ввести вопросы и ответы для игры.\n");
+        questions[0] = "tech";
+        answers[0] = "tech";
 
-        }
-
-        /*
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 6; i++) {
             System.out.printf("\"Введите вопрос #%d\"\n", i);
             String question = scanner.nextLine();
             questions[i] = question;
@@ -76,10 +59,10 @@ public class Game {
             String answer = scanner.nextLine();
             answers[i] = answer;
         }
-        */
+
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
         try {
-            Thread.sleep(500);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -103,6 +86,7 @@ public class Game {
 
     //
     public void chooseBox(Player player) {
+        yakubovich.boxesToRoom();
         System.out.println("Выберите левую или правую шкатулку. Для выбора нажмите 'л' или 'п'");
         while (true) {
             String choose = scanner.nextLine();
@@ -122,13 +106,11 @@ public class Game {
     //5.2 метод создания игроков
     public Player[] createPlayers() {
         Player[] players = new Player[3];
-        players[0] = new Player("first", "city1");
-        players[1] = new Player("second", "city2");
-        players[2] = new Player("third", "city3");
 
-        /*
-        for (int i = 0; i < playersNum; i++) {
-            System.out.println("Игрок №" + (i+1) + " представьтесь: имя,город. Например: Иван,Москва");
+
+        for (int i = 0; i < PLAYERS_NUM; i++) {
+            System.out.println("Игрок №" + (i + 1)
+                    + " представьтесь: имя,город. Например: Иван,Москва");
             while (true) {
                 String data = scanner.nextLine();
                 if (data.contains(",")) {
@@ -140,7 +122,7 @@ public class Game {
                 }
             }
         }
-        */
+
 
         return players;
     }
@@ -225,7 +207,7 @@ public class Game {
             for (int i = 0; i < PLAYERS_NUM; i++) {
                 isWin = move(questions[i], players[i]);
                 if (isWin) {
-                    if (isFinalRound) {
+                    if (!isFinalRound) {
                         yakubovich.askForWinner(players[i].getName(),
                                 players[i].getCity(), false);
                         winners.add(players[i]);
@@ -258,15 +240,16 @@ public class Game {
 
     //5.8 создаем метод сыграть финальный раунд
     public void playFinalRound() {
-        tableau.setTrueAnswer(answers[FINAL_ROUND_INDEX]);
+        tableau.setTrueAnswer(answers[FINAL_ROUND_INDEX + 1]);
         tableau.init();
         Player[] winner = new Player[3];
         yakubovich.invite(winners.toArray(winner), FINAL_ROUND_INDEX + 1);
-        yakubovich.askQuestion(FINAL_ROUND_INDEX, questions);
+        yakubovich.askQuestion(FINAL_ROUND_INDEX + 1, questions);
         System.out.println(" " + String.join(" ", tableau.getLettersOnTableau()) + " ");
         Player gameWinner = playRound(winners.toArray(winner));
         absoluteWinner = gameWinner;
-        System.out.println("Победитель " + gameWinner.getName() + " набрал " + gameWinner.getPoints() + " очков");
+        System.out.println("Победитель " + gameWinner.getName()
+                + " набрал " + gameWinner.getPoints() + " очков");
 
     }
 
