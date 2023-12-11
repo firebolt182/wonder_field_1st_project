@@ -21,8 +21,9 @@ public class PlayerAnswer {
         String choice;
         //проверка корректности ввода из консоли
         while (true) {
-            choice = Game.getScanner().nextLine();
-            if (choice.equals("б") || choice.equals("с")) {
+            choice = Game.SCANNER.nextLine();
+            if ((choice.equalsIgnoreCase("б") || choice.equalsIgnoreCase("с"))
+                && !choice.isEmpty()) {
                 break;
             }
         }

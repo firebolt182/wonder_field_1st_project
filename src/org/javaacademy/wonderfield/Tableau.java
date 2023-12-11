@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Tableau {
     private String trueAnswer;
-    private String[] lettersOnTableau;
+    private String[] letters;
 
     public String getTrueAnswer() {
         return trueAnswer;
@@ -15,24 +15,24 @@ public class Tableau {
         this.trueAnswer = trueAnswer.toUpperCase();
     }
 
-    public String[] getLettersOnTableau() {
-        return lettersOnTableau;
+    public String[] getLetters() {
+        return letters;
     }
 
-    public void setLettersOnTableau(String[] lettersOnTableau) {
-        this.lettersOnTableau = lettersOnTableau;
+    public void setLetters(String[] letters) {
+        this.letters = letters;
     }
 
     //2.2 Инициализация табло
     public void init() {
-        lettersOnTableau = new String[trueAnswer.length()];
-        Arrays.fill(lettersOnTableau, "_");
+        letters = new String[trueAnswer.length()];
+        Arrays.fill(letters, "_");
     }
 
     //2.3 отображает все буквы
     public void show() {
         if (attributesNotEmpty()) {
-            for (String letters : lettersOnTableau) {
+            for (String letters : letters) {
                 System.out.print(" " + String.join(" ", letters) + " ");
             }
             System.out.println();
@@ -45,7 +45,7 @@ public class Tableau {
             if (word.length() == 1) {
                 for (int i = 0; i < trueAnswer.length(); i++) {
                     if (trueAnswer.split("")[i].equals(word.toUpperCase())) {
-                        lettersOnTableau[i] = word.toUpperCase();
+                        letters[i] = word.toUpperCase();
                     }
                 }
             }
@@ -61,11 +61,15 @@ public class Tableau {
 
     //2.6 содержит ли неизвестные буквы
     public boolean containsUnknownWords() {
-        return !Arrays.toString(this.getLettersOnTableau()).contains("_");
+        return !Arrays.toString(this.getLetters()).contains("_");
     }
 
     //2.7 проверяет, что атрибуты не пустые
     public boolean attributesNotEmpty() {
-        return !trueAnswer.isEmpty() || lettersOnTableau == null;
+        try {
+            return !trueAnswer.isEmpty() || letters == null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

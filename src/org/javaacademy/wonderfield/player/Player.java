@@ -56,11 +56,14 @@ public class Player {
     //3.2 Кричит букву
     public String sayLetter() {
         // Проверяем букву,чтобы была одна и кириллицей
-        String letter = null;
+        String letter = "";
         while (true) {
-            letter = Game.getScanner().nextLine();
-            char letterCheck = letter.charAt(0);
-            if (letter.length() == 1
+            letter = Game.SCANNER.nextLine();
+            char letterCheck = 0;
+            if (!letter.isEmpty()) {
+                letterCheck = letter.charAt(0);
+            }
+            if (letter.length() == 1 
                     && ((letterCheck >= 'А' && letterCheck <= 'Я')
                     || (letterCheck >= 'а' && letterCheck <= 'я'))) {
                 System.out.printf("Игрок %s : %s\n", this.getName(), letter);
@@ -74,13 +77,13 @@ public class Player {
 
     //3.3 Говорит слово
     public String sayWord() {
-        String word = Game.getScanner().nextLine();
+        String word = Game.SCANNER.nextLine();
         System.out.printf("Игрок %s : %s\n", this.getName(), word);
         return word;
     }
 
     public int runTheWheel() {
-        int max = Wheel.getSector().length - 1;
+        int max = Wheel.values().length;
         return (int) (Math.random() * max);
     }
 }

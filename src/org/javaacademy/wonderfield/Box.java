@@ -5,7 +5,6 @@ import org.javaacademy.wonderfield.player.Player;
 public class Box {
     private boolean haveMoney;
 
-
     public Box(boolean haveMoney) {
         this.haveMoney = haveMoney;
     }

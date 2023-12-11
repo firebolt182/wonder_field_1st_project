@@ -1,14 +1,12 @@
 package org.javaacademy.wonderfield.host;
 
-import org.javaacademy.wonderfield.Game;
+import org.javaacademy.wonderfield.Question;
 import org.javaacademy.wonderfield.Tableau;
 import org.javaacademy.wonderfield.player.Player;
 
 //4.1 Создание класса Якубович
 public class Yakubovich {
-
     private final String name = "Якубович";
-
 
     //4.2 Первая фраза
     public void firstPhrase() {
@@ -23,21 +21,23 @@ public class Yakubovich {
     }
 
     //4.4 Приглашение
-    public void invite(Player[] players, int roundNumber) {
+    public boolean invite(Player[] players, int roundNumber) {
         if (roundNumber != 4) {
-            Game.isFinalRound = false;
+            //Game.isFinalRound = false;
             System.out.println(name + ": приглашаю " + roundNumber + " тройку игроков: "
                     + concat(players));
+            return false;
         } else {
-            Game.isFinalRound = true;
+            //Game.isFinalRound = true;
             System.out.println(name + ": приглашаю победителей групповых этапов: "
                     + concat(players));
+            return true;
         }
     }
 
     //3.5 задает вопрос
-    public void askQuestion(int roundNumber, String[] questions) {
-        System.out.println(name + ": Внимание вопрос!\n " + questions[roundNumber]);
+    public void askQuestion(int roundNumber, Question[] questions) {
+        System.out.println(name + ": Внимание вопрос!\n " + questions[roundNumber].getQuestion());
     }
 
     //3.6 Кричит в случае победы игрока
@@ -58,7 +58,7 @@ public class Yakubovich {
                 System.out.println(name + ": Абсолютно верно!");
                 //открываем на табло правильное слово
                 tableau.openWord(trueAnswer);
-                tableau.setLettersOnTableau(trueAnswer.split(""));
+                tableau.setLetters(trueAnswer.split(""));
                 return true;
             } else {
                 System.out.println(name + ": Неверно! Следующий игрок!");
@@ -67,7 +67,7 @@ public class Yakubovich {
             }
         } else {
             if ((trueAnswer).toUpperCase().contains(playerAnswer.toUpperCase())) {
-                for (String t : tableau.getLettersOnTableau()) {
+                for (String t : tableau.getLetters()) {
                     if (playerAnswer.equalsIgnoreCase(t)) {
                         System.out.println("Эта буква уже есть на табло");
                         return true;
@@ -111,6 +111,9 @@ public class Yakubovich {
         System.out.println(name + ": Две шкатулки в студию!!!");
     }
 
+    public void moveSkip() {
+        System.out.println(name + ": Сектор 'Пропуск хода на барабане'. Следующий игрок!");
+    }
 
     //метод соединения строк в одну строку с запятыми
     public String concat(Player[] players) {
