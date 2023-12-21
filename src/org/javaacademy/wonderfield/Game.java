@@ -5,7 +5,6 @@ import org.javaacademy.wonderfield.gift.Gift;
 import org.javaacademy.wonderfield.host.Yakubovich;
 import org.javaacademy.wonderfield.player.Player;
 
-
 public class Game {
     public static final  int PLAYERS_NUM = 3;
     public static final int ROUNDS = 6;
