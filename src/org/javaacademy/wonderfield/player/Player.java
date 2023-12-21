@@ -8,17 +8,15 @@ import org.javaacademy.wonderfield.Wheel;
 public class Player {
     private String name;
     private String city;
-    private int points;
-    private int threeInaRow;
 
-    private boolean haveMoneyFromBox;
+    private PlayerAnswer playerAnswer = new PlayerAnswer(this);
+    private int points = 0;
+    private int threeInRow = 0;
+    private int moneyFromBox = 0;
 
     public Player(String name, String city) {
         this.name = name;
         this.city = city;
-        this.points = 0;
-        threeInaRow = 0;
-        this.setHaveMoneyFromBox(false);
     }
 
     public String getName() {
@@ -37,20 +35,20 @@ public class Player {
         this.points = points;
     }
 
-    public int getThreeInaRow() {
-        return threeInaRow;
+    public int getThreeInRow() {
+        return threeInRow;
     }
 
-    public void setThreeInaRow(int threeInaRow) {
-        this.threeInaRow = threeInaRow;
+    public void setThreeInRow(int threeInRow) {
+        this.threeInRow = threeInRow;
     }
 
-    public boolean isHaveMoneyFromBox() {
-        return haveMoneyFromBox;
+    public int getMoneyFromBox() {
+        return moneyFromBox;
     }
 
-    public void setHaveMoneyFromBox(boolean haveMoneyFromBox) {
-        this.haveMoneyFromBox = haveMoneyFromBox;
+    public void setMoneyFromBox(int moneyFromBox) {
+        this.moneyFromBox = moneyFromBox;
     }
 
     //3.2 Кричит букву
@@ -59,13 +57,11 @@ public class Player {
         String letter = "";
         while (true) {
             letter = Game.SCANNER.nextLine();
-            char letterCheck = 0;
+            char letterCharacter = 0;
             if (!letter.isEmpty()) {
-                letterCheck = letter.charAt(0);
+                letterCharacter = letter.charAt(0);
             }
-            if (letter.length() == 1 
-                    && ((letterCheck >= 'А' && letterCheck <= 'Я')
-                    || (letterCheck >= 'а' && letterCheck <= 'я'))) {
+            if (letterCheck(letter, letterCharacter)) {
                 System.out.printf("Игрок %s : %s\n", this.getName(), letter);
                 break;
             } else {
@@ -75,11 +71,54 @@ public class Player {
         return letter;
     }
 
+    //отдельный метод проверки
+    public boolean letterCheck(String letter, Character letterCharacter) {
+        return (letter.length() == 1
+                && ((letterCharacter >= 'А' && letterCharacter <= 'Я')
+                || (letterCharacter >= 'а' && letterCharacter <= 'я')));
+    }
+
     //3.3 Говорит слово
     public String sayWord() {
         String word = Game.SCANNER.nextLine();
         System.out.printf("Игрок %s : %s\n", this.getName(), word);
         return word;
+    }
+
+    //3.5 ход игрока
+    public String move() {
+        System.out.printf("Ход игрока %s, %s\n", this.getName(), this.getCity());
+        System.out.println("Если хотите букву нажмите 'б' и enter,"
+                + " если хотите слово нажмите 'c' и enter");
+        String choice;
+        //проверка корректности ввода из консоли
+        while (true) {
+            choice = Game.SCANNER.nextLine();
+            if ((choice.equalsIgnoreCase("б") || choice.equalsIgnoreCase("с"))
+                    && !choice.isEmpty()) {
+                break;
+            } else {
+                System.out.println("Некорректное значение, введите 'б' или 'с'");
+            }
+        }
+        makeDecision(choice);
+        return playerAnswer.getAnswer();
+    }
+
+    //выбор - буква/слово
+    public void makeDecision(String choice) {
+        switch (choice) {
+            case "с":
+                playerAnswer.setAnswerType(AnswerType.WORD);
+                playerAnswer.setAnswer(this.sayWord());
+                break;
+            case "б":
+                playerAnswer.setAnswerType(AnswerType.LETTER);
+                playerAnswer.setAnswer(this.sayLetter());
+                break;
+            default:
+                break;
+        }
     }
 
     public int runTheWheel() {

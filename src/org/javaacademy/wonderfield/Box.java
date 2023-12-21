@@ -1,7 +1,5 @@
 package org.javaacademy.wonderfield;
 
-import org.javaacademy.wonderfield.player.Player;
-
 public class Box {
     private boolean haveMoney;
 
@@ -13,13 +11,13 @@ public class Box {
         this.haveMoney = haveMoney;
     }
 
-    public void openBox(Player player) {
+    public int openBox() {
         if (this.haveMoney) {
             System.out.println("Поздравляю, в этой шкатулке находятся деньги!");
-            player.setHaveMoneyFromBox(true);
+            return 10000;
         } else {
             System.out.println("Увы, эта шкатулка пуста!");
+            return 0;
         }
     }
-
 }

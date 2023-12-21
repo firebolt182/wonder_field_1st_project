@@ -1,11 +1,9 @@
 package org.javaacademy.wonderfield;
 
 import java.util.*;
-import org.javaacademy.wonderfield.gift.Name;
-import org.javaacademy.wonderfield.gift.Price;
+import org.javaacademy.wonderfield.gift.Gift;
 import org.javaacademy.wonderfield.host.Yakubovich;
 import org.javaacademy.wonderfield.player.Player;
-import org.javaacademy.wonderfield.player.PlayerAnswer;
 
 
 public class Game {
@@ -21,19 +19,9 @@ public class Game {
     private Tableau tableau = new Tableau();
     private Yakubovich yakubovich = new Yakubovich();
     private Player absoluteWinner;
-    private Box leftBox = new Box(false);
-    private Box rightBox = new Box(false);
     private String[] superGifts = {"Замок в Австрии", "200 кг золота", "АВТОМОБИИИИЛЬ!"};
-    private Map<Integer, String> gifts = new TreeMap<>();
     private ArrayList<String> winnerTakeGifts = new ArrayList<>();
     private Question[] questions = new Question[6];
-
-    public void giftsInit() {
-        for (int i = 0; i < Name.values().length; i++) {
-            gifts.put(Price.values()[i].getPrice(), Name.values()[i].getName());
-        }
-
-    }
 
     //1.5 создание метода init()
     public void init() {
@@ -50,21 +38,17 @@ public class Game {
             System.out.printf("\"Введите ответ вопрос #%d\"\n", i);
             questions[i].setAnswer(SCANNER.nextLine());
         }
-
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < 51; i++) {
-            System.out.println("");
-        }
-        giftsInit();
+        System.out.println(("\n").repeat(50));
     }
 
     //Кладем в одну из шкатулок деньги(true)
-    public void putMoneyToBox() {
+    public void putMoneyToBox(Box leftBox, Box rightBox) {
         int selector = (int) (Math.random() * 10);
         if (selector % 2 == 0) {
             leftBox.setHaveMoney(true);
@@ -74,16 +58,16 @@ public class Game {
     }
 
     //Выбор шкатулки
-    public void chooseBox(Player player) {
+    public void chooseBox(Player player, Box leftBox, Box rightBox) {
         yakubovich.boxesToRoom();
         System.out.println("Выберите левую или правую шкатулку. Для выбора нажмите 'л' или 'п'");
         while (true) {
             String choose = SCANNER.nextLine();
             if (choose.equals("л")) {
-                leftBox.openBox(player);
+                player.setMoneyFromBox(leftBox.openBox());
                 break;
             } else if (choose.equals("п")) {
-                rightBox.openBox(player);
+                player.setMoneyFromBox(rightBox.openBox());
                 break;
             } else {
                 System.out.println("введите 'л' или 'п'");
@@ -131,17 +115,15 @@ public class Game {
         if (sectorNumber == 13) {
             player.setPoints(player.getPoints() * 2);
         } else {
-            int points = Wheel.values()[sectorNumber].ordinal();
-            player.setPoints(player.getPoints() + (points * 100));
+            int points = Wheel.values()[sectorNumber].getPoints();
+            player.setPoints(player.getPoints() + points);
         }
     }
 
     //5.5 Метод хода игрока
     public boolean move(String question, Player player) {
-        PlayerAnswer playerAnswer = new PlayerAnswer(player);
         String answer = "";
         boolean exit = false;
-
         while (!exit) {
             int sector = player.runTheWheel();
             Wheel wheel = Wheel.values()[sector];
@@ -150,33 +132,35 @@ public class Game {
             if (sectorZero) {
                 return false;
             }
-            answer = playerAnswer.move();
+            answer = player.move();
             if (yakubovich.checkAnswer(answer, tableau.getTrueAnswer(), tableau)) {
                 checkSector(player, sector);
-                player.setThreeInaRow(player.getThreeInaRow() + 1);
-                haveThreeInaRow(player);
+                player.setThreeInRow(player.getThreeInRow() + 1);
+                haveThreeInRow(player);
                 if (checkTableau(tableau)) {
                     return true;
                 }
             } else {
-                player.setThreeInaRow(0);
+                player.setThreeInRow(0);
                 return false;
             }
         }
-        player.setThreeInaRow(0);
+        player.setThreeInRow(0);
         return false;
     }
 
     //Если есть 3 в ряд
-    public void haveThreeInaRow(Player player) {
-        if (player.getThreeInaRow() == 3 && !player.isHaveMoneyFromBox()) {
-            playBoxes(player);
+    public void haveThreeInRow(Player player) {
+        if (player.getThreeInRow() == 3 && player.getMoneyFromBox() == 0) {
+            Box leftBox = new Box(false);
+            Box rightBox = new Box(false);
+            playBoxes(player, leftBox, rightBox);
         }
     }
 
     public boolean sectorZero(Player player, int sector) {
         if (sector == 0) {
-            player.setThreeInaRow(0);
+            player.setThreeInRow(0);
             yakubovich.moveSkip();
             return true;
         } else {
@@ -184,15 +168,14 @@ public class Game {
         }
     }
 
-    public void playBoxes(Player player) {
+    public void playBoxes(Player player, Box leftBox, Box rightBox) {
         //кладем деньги в одну из шкатулок
-        putMoneyToBox();
+        putMoneyToBox(leftBox, rightBox);
         //выбирает шкатулку
-        chooseBox(player);
+        chooseBox(player, leftBox, rightBox);
         System.out.println();
         //обнуляем серию из правильных букв
-        player.setThreeInaRow(0);
-        //проверка - есть ли неизвестные буквы на табло
+        player.setThreeInRow(0);
     }
 
     //5.6 метод сыграть раунд
@@ -225,11 +208,11 @@ public class Game {
             tableau.setTrueAnswer(questions[i].getAnswer());
             //обнуляю табло
             tableau.init();
-            isFinalRound = yakubovich.invite(players, i);
+            isFinalRound = false;
+            yakubovich.invite(players, i);
             yakubovich.askQuestion(i, questions);
             System.out.println(" " + String.join(" ", tableau.getLetters()) + " ");
             playRound(players, isFinalRound);
-
         }
     }
 
@@ -238,14 +221,14 @@ public class Game {
         tableau.setTrueAnswer(questions[FINAL_ROUND_INDEX + 1].getAnswer());
         tableau.init();
         Player[] winner = new Player[3];
-        isFinalRound = yakubovich.invite(winners.toArray(winner), FINAL_ROUND_INDEX + 1);
+        isFinalRound = true;
+        yakubovich.invite(winners.toArray(winner), FINAL_ROUND_INDEX + 1);
         yakubovich.askQuestion(FINAL_ROUND_INDEX + 1, questions);
         System.out.println(" " + String.join(" ", tableau.getLetters()) + " ");
         Player gameWinner = playRound(winners.toArray(winner), isFinalRound);
         absoluteWinner = gameWinner;
         System.out.println("Победитель " + gameWinner.getName()
                 + " набрал " + gameWinner.getPoints() + " очков");
-
     }
 
     //Играем Супер Игру
@@ -282,12 +265,52 @@ public class Game {
 
     //Печатаем подарки
     public void printGifts() {
-        int num = 1;
-
         System.out.println("Выберите подарки за накопленные очки:");
-        for (Map.Entry<Integer, String> gift : gifts.entrySet()) {
-            System.out.println(num + " " + gift.getKey() + " | " + gift.getValue());
-            num++;
+        for (int i = 1; i < Gift.values().length; i++) {
+            System.out.println(i + " : " + Gift.values()[i].getName()
+                    + " | " + Gift.values()[i].getPrice());
+        }
+    }
+
+    //Выбирает подарки
+    public void takeGifts() {
+        int choice;
+        while (absoluteWinner.getPoints() > 499) {
+            printGifts();
+            System.out.println("Осталось очков : " + absoluteWinner.getPoints());
+            choice = Integer.parseInt(SCANNER.nextLine());
+            switch (choice) {
+                case 1:
+                    chosenGift(500, choice);
+                    break;
+                case 2:
+                    chosenGift(1000, choice);
+                    break;
+                case 3:
+                    chosenGift(1500, choice);
+                    break;
+                case 4:
+                    chosenGift(2000, choice);
+                    break;
+                case 5:
+                    chosenGift(2500, choice);
+                    break;
+                case 6:
+                    chosenGift(3000, choice);
+                    break;
+                default:
+                    System.out.println("Введите цифру согласно выбора!");
+                    break;
+            }
+        }
+        offerToPlaySuperGame();
+    }
+
+    public void chosenGift(int points, int choice) {
+        if (checkPoints(points)) {
+            System.out.println("Вы выбрали :" + Gift.values()[choice].getName());
+            absoluteWinner.setPoints(absoluteWinner.getPoints() - points);
+            winnerTakeGifts.add(Gift.values()[choice].getName());
         }
     }
 
@@ -303,48 +326,6 @@ public class Game {
             return false;
         }
         return true;
-    }
-
-    //Выбирает подарки
-    public void takeGifts() {
-        String choice;
-        while (absoluteWinner.getPoints() > 499) {
-            printGifts();
-            System.out.println("Осталось очков : " + absoluteWinner.getPoints());
-            choice = SCANNER.nextLine();
-            switch (choice) {
-                case "1":
-                    chosenGift(500);
-                    break;
-                case "2":
-                    chosenGift(1000);
-                    break;
-                case "3":
-                    chosenGift(1500);
-                    break;
-                case "4":
-                    chosenGift(2000);
-                    break;
-                case "5":
-                    chosenGift(2500);
-                    break;
-                case "6":
-                    chosenGift(3000);
-                    break;
-                default:
-                    System.out.println("Введите цифру согласно выбора!");
-                    break;
-            }
-        }
-        offerToPlaySuperGame();
-    }
-
-    public void chosenGift(int points) {
-        if (checkPoints(points)) {
-            System.out.println("Вы выбрали :" + gifts.get(points));
-            absoluteWinner.setPoints(absoluteWinner.getPoints() - points);
-            winnerTakeGifts.add(gifts.get(points));
-        }
     }
 
     // Предложение сыграть в суперигру и тут же присвоение суперподарка
@@ -373,8 +354,8 @@ public class Game {
         for (String gift : gifts) {
             System.out.println(gift);
         }
-        if (player.isHaveMoneyFromBox()) {
-            System.out.println("Деньги из шкатулки");
+        if (player.getMoneyFromBox() > 0) {
+            System.out.println("Деньги из шкатулки : " + player.getMoneyFromBox());
         }
         yakubovich.saySuperThing(randomGift);
     }

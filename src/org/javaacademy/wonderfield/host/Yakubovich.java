@@ -21,17 +21,13 @@ public class Yakubovich {
     }
 
     //4.4 Приглашение
-    public boolean invite(Player[] players, int roundNumber) {
+    public void invite(Player[] players, int roundNumber) {
         if (roundNumber != 4) {
-            //Game.isFinalRound = false;
             System.out.println(name + ": приглашаю " + roundNumber + " тройку игроков: "
                     + concat(players));
-            return false;
         } else {
-            //Game.isFinalRound = true;
             System.out.println(name + ": приглашаю победителей групповых этапов: "
                     + concat(players));
-            return true;
         }
     }
 
@@ -43,45 +39,53 @@ public class Yakubovich {
     //3.6 Кричит в случае победы игрока
     public void askForWinner(String playerName, String city, boolean isFinalRound) {
         if (!isFinalRound) {
-            System.out.println(name + ": Молодец! " + playerName + " из " + city
-                    + " проходит в финал!");
+            System.out.printf("%s : Молодец! %s из %s проходит в финал!\n", name, playerName, city);
         } else {
-            System.out.println(name + " : И перед нами победитель Капитал шоу поле чудес! Это "
-                    + playerName + " из " + city);
+            System.out.printf("%s : И перед нами победитель Капитал шоу поле чудес! Это"
+                    + " %s из %s\n", name, playerName, city);
         }
     }
 
     //3.7 проверяет ответ игрока
     public boolean checkAnswer(String playerAnswer, String trueAnswer, Tableau tableau) {
         if (playerAnswer.length() > 1) {
-            if ((trueAnswer).equalsIgnoreCase(playerAnswer)) {
-                System.out.println(name + ": Абсолютно верно!");
-                //открываем на табло правильное слово
-                tableau.openWord(trueAnswer);
-                tableau.setLetters(trueAnswer.split(""));
-                return true;
-            } else {
-                System.out.println(name + ": Неверно! Следующий игрок!");
-                System.out.println("__________________________________");
-                return false;
-            }
+            return checkWord(playerAnswer, trueAnswer, tableau);
         } else {
-            if ((trueAnswer).toUpperCase().contains(playerAnswer.toUpperCase())) {
-                for (String t : tableau.getLetters()) {
-                    if (playerAnswer.equalsIgnoreCase(t)) {
-                        System.out.println("Эта буква уже есть на табло");
-                        return true;
-                    }
+            return checkLetter(playerAnswer, trueAnswer, tableau);
+        }
+    }
+
+    //проверка слова
+    public boolean checkWord(String playerAnswer, String trueAnswer, Tableau tableau) {
+        if ((trueAnswer).equalsIgnoreCase(playerAnswer)) {
+            System.out.println(name + ": Абсолютно верно!");
+            //открываем на табло правильное слово
+            tableau.openWord(trueAnswer);
+            tableau.setLetters(trueAnswer.split(""));
+            return true;
+        } else {
+            System.out.println(name + ": Неверно! Следующий игрок!");
+            System.out.println("__________________________________");
+            return false;
+        }
+    }
+
+    //проверка буквы
+    public boolean checkLetter(String playerAnswer, String trueAnswer, Tableau tableau) {
+        if ((trueAnswer).toUpperCase().contains(playerAnswer.toUpperCase())) {
+            for (String t : tableau.getLetters()) {
+                if (playerAnswer.equalsIgnoreCase(t)) {
+                    System.out.println("Эта буква уже есть на табло");
+                    return true;
                 }
-                //табло открывает букву
-                System.out.println(name + ": Есть такая буква, откройте ее!");
-                tableau.openLetter(playerAnswer);
-                return true;
-            } else {
-                System.out.println(name + " : Нет такой буквы! Следующий игрок, крутите барабан!");
-                System.out.println("__________________________________");
-                return false;
             }
+            System.out.println(name + ": Есть такая буква, откройте ее!");
+            tableau.openLetter(playerAnswer);
+            return true;
+        } else {
+            System.out.println(name + " : Нет такой буквы! Следующий игрок, крутите барабан!");
+            System.out.println("__________________________________");
+            return false;
         }
     }
 

@@ -41,17 +41,19 @@ public class Tableau {
 
     // 2.4 открывает букву
     public void openLetter(String word) {
-        if (attributesNotEmpty()) {
-            if (word.length() == 1) {
-                for (int i = 0; i < trueAnswer.length(); i++) {
-                    if (trueAnswer.split("")[i].equals(word.toUpperCase())) {
-                        letters[i] = word.toUpperCase();
-                    }
-                }
-            }
+        if (attributesNotEmpty() && word.length() == 1) {
+            open(word);
         }
         // Отображение будет с найденной буквой
         this.show();
+    }
+
+    public void open(String word) {
+        for (int i = 0; i < trueAnswer.length(); i++) {
+            if (trueAnswer.split("")[i].equals(word.toUpperCase())) {
+                letters[i] = word.toUpperCase();
+            }
+        }
     }
 
     //2.5 открывает слово целиком
@@ -66,10 +68,11 @@ public class Tableau {
 
     //2.7 проверяет, что атрибуты не пустые
     public boolean attributesNotEmpty() {
-        try {
-            return !trueAnswer.isEmpty() || letters == null;
-        } catch (Exception e) {
-            return false;
+        if (!trueAnswer.isEmpty() || letters == null) {
+            return true;
+        } else {
+            throw new RuntimeException("что то пошло не так");
         }
+
     }
 }

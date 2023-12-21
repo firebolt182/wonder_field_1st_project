@@ -4,7 +4,7 @@ import org.javaacademy.wonderfield.Game;
 
 //3.4 Создание класса 'Ответ игрока'
 public class PlayerAnswer {
-    Player player;
+    private Player player;
     private AnswerType answerType;
     private String answer;
 
@@ -12,33 +12,15 @@ public class PlayerAnswer {
         this.player = player;
     }
 
+    public void setAnswerType(AnswerType answerType) {
+        this.answerType = answerType;
+    }
 
-    //3.5 ход игрока
-    public String move() {
-        System.out.printf("Ход игрока %s, %s\n", player.getName(), player.getCity());
-        System.out.println("Если хотите букву нажмите 'б' и enter,"
-                + " если хотите слово нажмите 'c' и enter");
-        String choice;
-        //проверка корректности ввода из консоли
-        while (true) {
-            choice = Game.SCANNER.nextLine();
-            if ((choice.equalsIgnoreCase("б") || choice.equalsIgnoreCase("с"))
-                && !choice.isEmpty()) {
-                break;
-            }
-        }
-        switch (choice) {
-            case "с":
-                answerType = AnswerType.WORD;
-                answer = player.sayWord();
-                break;
-            case "б":
-                answerType = AnswerType.LETTER;
-                answer = player.sayLetter();
-                break;
-            default:
-                break;
-        }
+    public String getAnswer() {
         return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }
